@@ -3,35 +3,191 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Zeyang Yuan Computer Vision Project</title>
+  <title>Computer Vision + Mobile Robotics — Project 3</title>
+  <meta name="description" content="Map-based marker and line extraction + differential drive motion + manipulator actuation." />
+
   <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;padding:40px;line-height:1.6}
-    a{text-decoration:none}
-    .wrap{max-width:850px;margin:0 auto}
-    .back{display:inline-block;margin-bottom:18px}
-    .card{border:1px solid #ddd;border-radius:14px;padding:18px}
+    :root{
+      --bg:#0b1220; --card:#111a2e; --text:#e8eefc; --muted:#b7c2df;
+      --line:#223056; --accent:#7aa2ff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--text);
+      background: radial-gradient(900px 500px at 20% 10%, #172144 0%, var(--bg) 55%) fixed;
+      line-height:1.6;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .wrap{max-width:980px; margin:0 auto; padding:40px 18px 70px}
+    .back{display:inline-block; margin-bottom:18px}
+
+    header{
+      padding-bottom:18px;
+      border-bottom:1px solid var(--line);
+      margin-bottom:18px;
+    }
+    h1{margin:0 0 6px; font-size:30px}
+    .subtitle{margin:0; color:var(--muted); max-width:85ch}
+
+    .hero{
+      width:100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius:16px;
+      border:1px solid var(--line);
+      margin:18px 0 10px;
+      display:block;
+    }
+
+    .grid{
+      display:grid;
+      gap:16px;
+      grid-template-columns: repeat(12, 1fr);
+      margin-top:16px;
+    }
+    .card{
+      grid-column: span 12;
+      border:1px solid var(--line);
+      background: rgba(17,26,46,.75);
+      border-radius:16px;
+      padding:18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    @media (min-width: 900px){
+      .card.half{grid-column: span 6;}
+    }
+
+    h2{margin:0 0 10px; font-size:18px}
+    p{margin:0 0 12px; color:var(--muted)}
+    ul{margin:0; padding-left:18px; color:var(--muted)}
+    li{margin:6px 0}
+
+    .figure{margin: 12px 0 0;}
+    .shot{
+      width:100%;
+      border-radius:14px;
+      border:1px solid var(--line);
+      display:block;
+      background: rgba(11,18,32,.35);
+    }
+    .caption{margin-top:8px; font-size:13px; color:var(--muted)}
+
+    .btns{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:9px 12px; border-radius:10px;
+      border:1px solid var(--line);
+      background: rgba(11,18,32,.35);
+      color:var(--text);
+      min-width:120px;
+    }
+    .btn.primary{
+      background: rgba(122,162,255,.16);
+      border-color: rgba(122,162,255,.45);
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <a class="back" href="../../">← Back</a>
-    <h1>Project 1 — Title</h1>
-    <p>Explain what the project is, what you built, and why it matters.</p>
+    <a class="back" href="../../">← Back to main page</a>
 
-    <div class="card">
-      <h2>Links</h2>
-      <ul>
-        <li><a href="https://github.com/your-username/project-1" target="_blank" rel="noreferrer">Source code</a></li>
-        <li><a href="https://example.com" target="_blank" rel="noreferrer">Live demo (if any)</a></li>
-      </ul>
+    <header>
+      <h1>Computer Vision + Mobile Robotics</h1>
+      <p class="subtitle">
+        From a map image, extract start/end markers and path boundary lines, convert to motion commands for a differential-drive robot,
+        and actuate a mounted desktop arm to reach a target region. :contentReference[oaicite:10]{index=10}
+      </p>
 
-      <h2>Highlights</h2>
-      <ul>
-        <li>Key feature #1</li>
-        <li>Key feature #2</li>
-        <li>Tech used: X, Y, Z</li>
-      </ul>
+      <!-- Put an image here: projects/project-3/img/hero.jpg -->
+      <img class="hero" src="./img/hero.jpg" alt="Map-based planning hero image">
+    </header>
+
+    <div class="btns">
+      <!-- Replace or remove as needed -->
+      <a class="btn" href="https://github.com/your-username/computer-vision-mobile-robot" target="_blank" rel="noreferrer">Source</a>
+      <a class="btn primary" href="#" onclick="return false;">Demo (optional)</a>
     </div>
+
+    <main class="grid">
+      <section class="card">
+        <h2>Problem</h2>
+        <p>
+          Given a map image with colored markers (A, B, C) and red path boundary lines, the workflow extracts the marker centroids and line equations,
+          then drives a robot along the computed path and finally actuates a manipulator to reach the target region. :contentReference[oaicite:11]{index=11}
+        </p>
+        <div class="figure">
+          <!-- Put an image here: projects/project-3/img/map.png -->
+          <img class="shot" src="./img/map.png" alt="Map with A, B, C markers and path lines">
+          <div class="caption">Input map: markers and path to be extracted.</div>
+        </div>
+      </section>
+
+      <section class="card half">
+        <h2>Marker extraction</h2>
+        <ul>
+          <li>Color classification in RGB with a purity coefficient δ to isolate blue markers (A, B) and green marker (C). :contentReference[oaicite:12]{index=12}</li>
+          <li>Morphological erosion + dilation using a circular structuring element sized to the marker radius to remove noise. :contentReference[oaicite:13]{index=13}</li>
+          <li>Separate the two blue markers by perimeter detection and connected-perimeter labeling; compute centroids via image moments. :contentReference[oaicite:14]{index=14}</li>
+        </ul>
+        <div class="figure">
+          <!-- Put an image here: projects/project-3/img/markers.png -->
+          <img class="shot" src="./img/markers.png" alt="Marker extraction stages">
+          <div class="caption">Marker extraction stages: classification and morphology.</div>
+        </div>
+      </section>
+
+      <section class="card half">
+        <h2>Path boundary extraction</h2>
+        <ul>
+          <li>Color classification to isolate near-pure red path lines. :contentReference[oaicite:15]{index=15}</li>
+          <li>Edge detection via convolution filters for horizontal/vertical edges and binarization to avoid “red blobs” becoming lines. :contentReference[oaicite:16]{index=16}</li>
+          <li>Hough transform (ρ, θ) to find dominant lines; reconstruct line elements and use known marker positions to identify the usable path. :contentReference[oaicite:17]{index=17}</li>
+        </ul>
+        <div class="figure">
+          <!-- Put an image here: projects/project-3/img/hough.png -->
+          <img class="shot" src="./img/hough.png" alt="Hough transform line detection">
+          <div class="caption">Line detection: edges → Hough peaks → line elements.</div>
+        </div>
+      </section>
+
+      <section class="card half">
+        <h2>Results (vision)</h2>
+        <p>
+          The report lists extracted marker centroids and line equations (four inner lines used as path boundaries), providing the geometric basis for motion planning. :contentReference[oaicite:18]{index=18}
+        </p>
+        <div class="figure">
+          <!-- Put an image here: projects/project-3/img/results-table.png -->
+          <img class="shot" src="./img/results-table.png" alt="Extracted coordinates and line equations">
+          <div class="caption">Extracted centroids and path boundary line equations.</div>
+        </div>
+      </section>
+
+      <section class="card half">
+        <h2>Mobile robot kinematics</h2>
+        <p>
+          The robot is modeled as a differential drive platform; wheel speeds are computed from desired body velocity using inverse kinematics.
+          The planned motion is segmented into straight–turn–straight with chosen parameters (example values include v, ω, R, and axle half-length). :contentReference[oaicite:19]{index=19}
+        </p>
+        <div class="figure">
+          <!-- Put an image here: projects/project-3/img/diff-drive.png -->
+          <img class="shot" src="./img/diff-drive.png" alt="Differential drive model and frames">
+          <div class="caption">Differential-drive model and wheel-rate relationships.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Manipulator actuation</h2>
+        <p>
+          A desktop 4-DOF arm mounted on the mobile platform is used to reach the target region after the base moves into position; the task is simplified to
+          placing the end-effector within the green marker region at some altitude, with a noted strategy of continuing past marker B to reduce the reach requirement. :contentReference[oaicite:20]{index=20}
+        </p>
+      </section>
+    </main>
   </div>
 </body>
 </html>

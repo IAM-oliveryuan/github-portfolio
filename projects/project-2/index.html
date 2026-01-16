@@ -3,35 +3,224 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Zeyang Yuan Desktop Manipulator Project</title>
+  <title>Desktop Robot Arm — Project 2</title>
+  <meta name="description" content="4-DOF desktop robot arm: design, kinematics, Jacobian, and trajectory planning." />
+
   <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;padding:40px;line-height:1.6}
-    a{text-decoration:none}
-    .wrap{max-width:850px;margin:0 auto}
-    .back{display:inline-block;margin-bottom:18px}
-    .card{border:1px solid #ddd;border-radius:14px;padding:18px}
+    :root{
+      --bg:#0b1220; --card:#111a2e; --text:#e8eefc; --muted:#b7c2df;
+      --line:#223056; --accent:#7aa2ff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--text);
+      background: radial-gradient(900px 500px at 20% 10%, #172144 0%, var(--bg) 55%) fixed;
+      line-height:1.6;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .wrap{max-width:980px; margin:0 auto; padding:40px 18px 70px}
+    .back{display:inline-block; margin-bottom:18px}
+
+    header{
+      padding-bottom:18px;
+      border-bottom:1px solid var(--line);
+      margin-bottom:18px;
+    }
+    h1{margin:0 0 6px; font-size:30px}
+    .subtitle{margin:0; color:var(--muted); max-width:80ch}
+
+    .hero{
+      width:100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius:16px;
+      border:1px solid var(--line);
+      margin:18px 0 10px;
+      display:block;
+    }
+
+    .grid{
+      display:grid;
+      gap:16px;
+      grid-template-columns: repeat(12, 1fr);
+      margin-top:16px;
+    }
+    .card{
+      grid-column: span 12;
+      border:1px solid var(--line);
+      background: rgba(17,26,46,.75);
+      border-radius:16px;
+      padding:18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    @media (min-width: 900px){
+      .card.half{grid-column: span 6;}
+      .card.third{grid-column: span 4;}
+    }
+
+    h2{margin:0 0 10px; font-size:18px}
+    p{margin:0 0 12px; color:var(--muted)}
+    ul{margin:0; padding-left:18px; color:var(--muted)}
+    li{margin:6px 0}
+
+    .figure{margin: 12px 0 0;}
+    .shot{
+      width:100%;
+      border-radius:14px;
+      border:1px solid var(--line);
+      display:block;
+      background: rgba(11,18,32,.35);
+    }
+    .caption{margin-top:8px; font-size:13px; color:var(--muted)}
+
+    .btns{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:9px 12px; border-radius:10px;
+      border:1px solid var(--line);
+      background: rgba(11,18,32,.35);
+      color:var(--text);
+      min-width:120px;
+    }
+    .btn.primary{
+      background: rgba(122,162,255,.16);
+      border-color: rgba(122,162,255,.45);
+    }
+
+    .kpi{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:10px;
+      margin-top:10px;
+    }
+    @media (min-width: 700px){
+      .kpi{grid-template-columns: repeat(4, 1fr);}
+    }
+    .kpi .box{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      background: rgba(11,18,32,.35);
+    }
+    .kpi .label{font-size:12px; color:var(--muted); margin-bottom:6px}
+    .kpi .value{font-size:16px}
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <a class="back" href="../../">← Back to main page</a>
-    <h1>Project 1 — Title</h1>
-    <p>Explain what the project is, what you built, and why it matters.</p>
 
-    <div class="card">
-      <h2>Links</h2>
-      <ul>
-        <li><a href="https://github.com/your-username/project-1" target="_blank" rel="noreferrer">Source code</a></li>
-        <li><a href="https://example.com" target="_blank" rel="noreferrer">Live demo (if any)</a></li>
-      </ul>
+    <header>
+      <h1>Desktop Robot Arm</h1>
+      <p class="subtitle">
+        A 4-DOF desktop manipulator (3 revolute + 1 prismatic) designed and analyzed via DH parameters,
+        forward/inverse kinematics, Jacobian derivation, and joint-space trajectory planning.
+      </p>
 
-      <h2>Highlights</h2>
-      <ul>
-        <li>Key feature #1</li>
-        <li>Key feature #2</li>
-        <li>Tech used: X, Y, Z</li>
-      </ul>
+      <!-- Put an image here: projects/project-2/img/hero.jpg -->
+      <img class="hero" src="./img/hero.jpg" alt="Desktop robot arm hero image">
+    </header>
+
+    <div class="btns">
+      <!-- Replace or remove as needed -->
+      <a class="btn" href="https://github.com/your-username/desktop-arm" target="_blank" rel="noreferrer">Source</a>
+      <a class="btn primary" href="#" onclick="return false;">Demo (optional)</a>
     </div>
+
+    <main class="grid">
+      <section class="card">
+        <h2>Overview</h2>
+        <p>
+          The arm is intended for desktop-scale tasks (moving objects, holding tools, providing lighting) and is modeled
+          using standard robotics tooling: DH parameters, transformation matrices, and velocity mapping through a Jacobian. :contentReference[oaicite:2]{index=2}
+        </p>
+        <div class="kpi">
+          <div class="box">
+            <div class="label">Degrees of freedom</div>
+            <div class="value">4 (3R + 1P)</div>
+          </div>
+          <div class="box">
+            <div class="label">DH link constants</div>
+            <div class="value">L1=35cm, L2=25cm, L3=2cm, L4=10cm</div>
+          </div>
+          <div class="box">
+            <div class="label">Trajectory method</div>
+            <div class="value">Piecewise quadratic + cubic spline</div>
+          </div>
+          <div class="box">
+            <div class="label">Workspace note</div>
+            <div class="value">Point-sampled visualization</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card half">
+        <h2>Mechanical design + DH model</h2>
+        <p>
+          The design uses three consecutive revolute joints and a prismatic joint. A DH table is extracted from the sketch,
+          and fixed link lengths are chosen to avoid collisions with the desktop plane. :contentReference[oaicite:3]{index=3}
+        </p>
+        <div class="figure">
+          <!-- Put an image here: projects/project-2/img/design-sketch.jpg -->
+          <img class="shot" src="./img/design-sketch.jpg" alt="Robot arm sketch with frames">
+          <div class="caption">Sketch + frame assignment used to read DH parameters.</div>
+        </div>
+      </section>
+
+      <section class="card half">
+        <h2>Forward / inverse kinematics</h2>
+        <p>
+          Forward kinematics is obtained by multiplying the chain transforms to produce the end-effector pose. Inverse kinematics
+          is solved procedurally for (θ1, θ2, θ3, d4), with feasibility depending on whether the requested pose is reachable
+          with only 4 independent variables. :contentReference[oaicite:4]{index=4}
+        </p>
+        <div class="figure">
+          <!-- Put an image here: projects/project-2/img/workspace.png -->
+          <img class="shot" src="./img/workspace.png" alt="Workspace visualization">
+          <div class="caption">Workspace visualization (point-sampled) from forward kinematics.</div>
+        </div>
+      </section>
+
+      <section class="card half">
+        <h2>Jacobian derivation</h2>
+        <p>
+          The Jacobian is derived from linear and angular velocity propagation across frames, producing a mapping between joint rates
+          and end-effector velocity. :contentReference[oaicite:5]{index=5}
+        </p>
+        <div class="figure">
+          <!-- Put an image here: projects/project-2/img/jacobian.jpg -->
+          <img class="shot" src="./img/jacobian.jpg" alt="Jacobian derivation notes">
+          <div class="caption">Systematic Jacobian derivation using frame velocities.</div>
+        </div>
+      </section>
+
+      <section class="card half">
+        <h2>Trajectory planning (joint space)</h2>
+        <p>
+          Via points are selected in (θ1, θ2, θ3, d4). Interpolation uses piecewise quadratic segments for variables with repeated values
+          (θ2, d4) and piecewise cubic spline for continuously varying variables (θ1, θ3), with zero start/end velocity constraints. :contentReference[oaicite:6]{index=6}
+        </p>
+        <div class="figure">
+          <!-- Put an image here: projects/project-2/img/trajectory-joint.png -->
+          <img class="shot" src="./img/trajectory-joint.png" alt="Joint-space trajectory plots">
+          <div class="caption">Joint-space trajectories and smoothness constraints.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Results and discussion</h2>
+        <ul>
+          <li>Workspace coverage: achieved via full rotation of the first revolute joint and vertical range via joint 2 + prismatic motion. :contentReference[oaicite:7]{index=7}</li>
+          <li>Motion safety: velocity/acceleration magnitudes discussed, with a note that reducing δt improves efficiency but increases rates. :contentReference[oaicite:8]{index=8}</li>
+          <li>Future improvement: reduce sharp turns in acceleration by using higher-order piecewise polynomials. :contentReference[oaicite:9]{index=9}</li>
+        </ul>
+      </section>
+    </main>
   </div>
 </body>
 </html>
