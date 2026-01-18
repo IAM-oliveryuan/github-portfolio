@@ -69,9 +69,7 @@
     ul{margin:0; padding-left:18px; color:var(--muted)}
     li{margin:6px 0}
 
-    .figure{
-      margin: 12px 0 0;
-    }
+    .figure{ margin: 12px 0 0; }
     .shot{
       width:100%;
       border-radius:14px;
@@ -107,6 +105,9 @@
       background: rgba(122,162,255,.16);
       border-color: rgba(122,162,255,.45);
     }
+
+    /* Small helper for section buttons inside cards */
+    .card-actions{margin-top:12px}
   </style>
 </head>
 
@@ -124,9 +125,17 @@
       <img class="hero" src="./img/hero.jpg" alt="Project 1 hero image">
     </header>
 
+    <!-- Top buttons: external links -->
     <div class="btns">
       <a class="btn primary" href="https://example.com" target="_blank" rel="noreferrer">Live Demo</a>
       <a class="btn" href="https://github.com/your-username/project-1" target="_blank" rel="noreferrer">Source</a>
+    </div>
+
+    <!-- Optional: internal navigation buttons -->
+    <div class="btns" style="margin-top:10px">
+      <a class="btn" href="./overview/">Overview page</a>
+      <a class="btn" href="./methodology/">Methodology page</a>
+      <a class="btn" href="./discussion/">Discussion page</a>
     </div>
 
     <main class="grid">
@@ -142,25 +151,37 @@
           <li><strong>Tech:</strong> X, Y, Z</li>
           <li><strong>Result:</strong> Any measurable outcome (if you have one)</li>
         </ul>
-      </section>
 
-      <!-- SECTION 2: Key feature with image -->
-      <section class="card half">
-        <h2>Feature 1</h2>
-        <p>Explain the feature and why it matters.</p>
-        <div class="figure">
-          <img class="shot" src="./img/screen-1.png" alt="Feature 1 screenshot">
-          <div class="caption">Caption describing what the screenshot shows.</div>
+        <div class="btns card-actions">
+          <a class="btn primary" href="./overview/">Read Overview</a>
         </div>
       </section>
 
-      <!-- SECTION 3: Another key feature with image -->
+      <!-- SECTION 2: Methodology (was Feature 1) -->
       <section class="card half">
-        <h2>Feature 2</h2>
-        <p>Explain the feature and any technical detail worth mentioning.</p>
+        <h2>Methodology</h2>
+        <p>High-level summary of your approach. Keep details for the Methodology page.</p>
         <div class="figure">
-          <img class="shot" src="./img/screen-2.png" alt="Feature 2 screenshot">
-          <div class="caption">Caption describing what the screenshot shows.</div>
+          <img class="shot" src="./img/screen-1.png" alt="Methodology illustration">
+          <div class="caption">Caption describing what the image shows.</div>
+        </div>
+
+        <div class="btns card-actions">
+          <a class="btn primary" href="./methodology/">Go to Methodology</a>
+        </div>
+      </section>
+
+      <!-- SECTION 3: Discussion (was Feature 2) -->
+      <section class="card half">
+        <h2>Discussion</h2>
+        <p>Key findings, trade-offs, limitations, and what you would do next.</p>
+        <div class="figure">
+          <img class="shot" src="./img/screen-2.png" alt="Discussion illustration">
+          <div class="caption">Caption describing what the image shows.</div>
+        </div>
+
+        <div class="btns card-actions">
+          <a class="btn primary" href="./discussion/">Go to Discussion</a>
         </div>
       </section>
 
