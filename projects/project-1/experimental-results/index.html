@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project 1 — Methodology</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#111a2e;
+      --text:#e8eefc;
+      --muted:#b7c2df;
+      --line:#223056;
+      --accent:#7aa2ff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--text);
+      background: radial-gradient(900px 500px at 20% 10%, #172144 0%, var(--bg) 55%) fixed;
+      line-height:1.6;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .wrap{max-width:980px; margin:0 auto; padding:40px 18px 70px}
+    .back{display:inline-block; margin-bottom:18px}
+
+    header{
+      padding-bottom:18px;
+      border-bottom:1px solid var(--line);
+      margin-bottom:18px;
+    }
+    h1{margin:0 0 6px; font-size:30px}
+    .subtitle{margin:0; color:var(--muted); max-width:75ch}
+
+    .hero{
+      width:100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius:16px;
+      border:1px solid var(--line);
+      margin:18px 0 10px;
+      display:block;
+    }
+
+    .grid{
+      display:grid;
+      gap:16px;
+      grid-template-columns: repeat(12, 1fr);
+      margin-top:16px;
+    }
+    .card{
+      grid-column: span 12;
+      border:1px solid var(--line);
+      background: rgba(17,26,46,.75);
+      border-radius:16px;
+      padding:18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    @media (min-width: 900px){
+      .card.half{grid-column: span 6;}
+    }
+
+    h2{margin:0 0 10px; font-size:18px}
+    p{margin:0 0 12px; color:var(--muted)}
+    ul{margin:0; padding-left:18px; color:var(--muted)}
+    li{margin:6px 0}
+
+    .figure{ margin: 12px 0 0; }
+    .shot{
+      width:100%;
+      border-radius:14px;
+      border:1px solid var(--line);
+      display:block;
+    }
+    .caption{
+      margin-top:8px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .gallery{
+      display:grid;
+      gap:10px;
+      grid-template-columns: repeat(2, 1fr);
+      margin-top:12px;
+    }
+    @media (min-width: 900px){
+      .gallery{grid-template-columns: repeat(3, 1fr);}
+    }
+
+    .btns{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:9px 12px; border-radius:10px;
+      border:1px solid var(--line);
+      background: rgba(11,18,32,.35);
+      color:var(--text);
+      min-width:120px;
+    }
+    .btn.primary{
+      background: rgba(122,162,255,.16);
+      border-color: rgba(122,162,255,.45);
+    }
+
+    /* Small helper for section buttons inside cards */
+    .card-actions{margin-top:12px}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <a class="back" href="../">← Back to Project 1</a>
+
+    <header>
+      <h1>Methodology</h1>
+      <p class="subtitle">High-level summary and detailed steps for how the project was carried out.</p>
+      <!-- Optional hero image for this page:
+      <img class="hero" src="../img/methodology-hero.jpg" alt="Methodology hero">
+      -->
+    </header>
+
+    <div class="btns">
+      <a class="btn" href="../overview/">Overview</a>
+      <a class="btn primary" href="../methodology/">Methodology</a>
+      <a class="btn" href="../discussion/">Discussion</a>
+    </div>
+
+    <main class="grid">
+      <section class="card">
+        <h2>Approach</h2>
+        <p>Explain your overall approach at a high level.</p>
+      </section>
+
+      <section class="card half">
+        <h2>Pipeline</h2>
+        <p>Step-by-step pipeline summary.</p>
+        <ul>
+          <li>Step 1 …</li>
+          <li>Step 2 …</li>
+          <li>Step 3 …</li>
+        </ul>
+      </section>
+
+      <section class="card half">
+        <h2>Implementation details</h2>
+        <p>Key technical details, constraints, parameters, etc.</p>
+        <div class="figure">
+          <img class="shot" src="../img/screen-1.png" alt="Methodology figure">
+          <div class="caption">Caption for this figure.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Notes / limitations</h2>
+        <p>Assumptions, edge cases, limitations, and trade-offs.</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
