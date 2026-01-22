@@ -291,9 +291,11 @@
 
       <section class="card half">
         <h2>Simulational Methodology</h2>
-        <p>The aim of the simulation is to be able to model the swelling equilibrium 
-           and the bending steady state of generic hydrogel beams in a salt solution,under an electric field.
-          
+        <p>I constructed the simulation around four main governing mechanisms into the system: 
+            diffusion-convection and Poisson’s equation for the ionic species and electric potential; 
+            continuity and momentum equation for the fluid pressure and gel displacement. 
+            I discretized the system using node-based finite-difference method 
+            and jointly used different non-linear solvers from Python and MATLAB for the iterative algorithm.
         </p>
 
         <div class="figure">
@@ -325,7 +327,12 @@
 
       <section class="card half">
         <h2>Experimental Results</h2>
-        <p>High-level summary of your approach. Keep details for the Results page.</p>
+        <p>The experimental results include the swelling behaviour of NaAc-AAm hydrogels in a NaCl solution, 
+            along with its bending in a NaCl solution under an electric field. 
+          The data demonstrates how the deformation is affected by parameters such as voltage, 
+          crosslinker concentration and salt bath concentration, 
+          which allows a way to verify the validity of the numerical scheme.
+        </p>
 
         <div class="figure">
           <div class="rotator">
@@ -355,7 +362,13 @@
 
       <section class="card half">
         <h2>Simulational Results</h2>
-        <p>Key findings, trade-offs, limitations, and what you would do next.</p>
+        <p>The simulational results comprise the prediction of the deformation of a generic electro-active hydrogel 
+          and how it is affected by voltage, crosslinker density and salt bath concentration. 
+          It also offers insights into the distribution of the all the ionic concentrations 
+          and the electric potential across the entire domain. The validity of the results is 
+          evaluated from various perspectives, 
+          including but not limited to comparing it against the experimental results.
+        </p>
 
         <div class="figure">
           <div class="rotator">
@@ -388,12 +401,40 @@
       </section>
 
       <section class="card">
+        <h2>Main limitation</h2>
+        <p>
+            <ul>
+              <li>To avoid electrolysis and ensure visible bending, 
+                only a limited range of voltage and electrode distance can be used.
+              </li>
+              
+              <li>Due to the intrinsic accuracy limitation of the selected local nonlinear solvers, 
+                the simulation was only able to produce consistent results when the voltage varies 
+                from 0.0625V to 0.1875V, the salt concentration varies from 8.75mol/m3 to 11.25 mol/m3 
+                and the reference water volume percentage varies from 0.6 to 0.9.
+              </li>
+              
+              <li>There is a mismatch of used parameter ranges between the experiment and simulation, 
+                which partially reduces the credibility of experimental validation.
+              </li>
+              
+            </ul>
+        </p>
+      </section>
+      
+      <section class="card">
         <h2>Future Work</h2>
         <p>
             <ul>
-              <li>First item</li>
-              <li>Second item</li>
-              <li>Third item</li>
+              <li>Deterministic global non-linear solvers and higher computational power will be 
+                used to improve the numerical accuracy and consistency of the simulation.
+              </li>
+              
+              <li>To address the parameter mismatch, a set of usable parameter ranges would be 
+                first investigated computationally. 
+                Usable parameter combinations will be tested out to match the simulation
+              </li>
+
             </ul>
         </p>
       </section>
