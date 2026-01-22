@@ -284,7 +284,7 @@
   <script>
   (() => {
     const DEFAULT_INTERVAL = 3500;
-    const OUT_MS = 480; // should roughly match the CSS transition duration above
+    const OUT_MS = 480; // match CSS
   
     function parseList(str) {
       return (str || "")
@@ -307,66 +307,100 @@
       urls.forEach(u => { const i = new Image(); i.src = u; });
     }
   
+    // Keep handles so we can pause/resume all from ONE visibility listener
+    const rotators = new Set();
+  
     function startRotator(img) {
-      const urls = parseList(img.dataset.images);
-      if (urls.length <= 1) return;
+      const rawUrls = parseList(img.dataset.images);
+      if (rawUrls.length <= 1) return;
   
       const captions = parseJsonArray(img.dataset.captions);
       const captionEl = img.closest(".figure")?.querySelector(".js-rotator-caption") || null;
-  
       const interval = Number(img.dataset.interval) || DEFAULT_INTERVAL;
   
-      // Normalize src comparisons (browser may store absolute URLs)
-      const normalizedUrls = urls.map(u => new URL(u, document.baseURI).href);
-      const currentHref = new URL(img.getAttribute("src") || urls[0], document.baseURI).href;
+      // Normalize all urls and always rotate using normalized hrefs
+      const urls = rawUrls.map(u => new URL(u, document.baseURI).href);
   
-      let idx = normalizedUrls.indexOf(currentHref);
+      // Determine initial index reliably
+      const currentSrc = img.currentSrc || img.getAttribute("src") || rawUrls[0];
+      const currentHref = new URL(currentSrc, document.baseURI).href;
+      let idx = urls.indexOf(currentHref);
       if (idx === -1) idx = 0;
   
-      preload(urls);
+      preload(rawUrls); // preload original strings is fine
   
-      // baseline "in" state
       img.classList.add("rotator-slide-left-in");
-  
-      // set initial caption (if provided)
       if (captionEl) captionEl.textContent = captions[idx] ?? "";
   
-      let timer = null;
+      let nextTimer = null;
+      let inTransition = false;
+      let paused = false;
   
-      const step = () => {
-        // transition out
+      function clearNext() {
+        if (nextTimer) window.clearTimeout(nextTimer);
+        nextTimer = null;
+      }
+  
+      function scheduleNext(delay = interval) {
+        clearNext();
+        if (paused) return;
+        nextTimer = window.setTimeout(step, delay);
+      }
+  
+      function step() {
+        if (paused || inTransition) return;
+  
+        inTransition = true;
+  
+        // out
         img.classList.remove("rotator-slide-left-in");
         img.classList.add("rotator-slide-left-out");
   
-        // after transition-out, swap src + caption, then transition in
         window.setTimeout(() => {
-          idx = (idx + 1) % urls.length; // 0 -> 1 -> 2 -> 0 ...
-  
+          // If paused mid-transition, finish cleanly but do not schedule further.
+          idx = (idx + 1) % urls.length;
           img.src = urls[idx];
           if (captionEl) captionEl.textContent = captions[idx] ?? "";
   
           img.classList.remove("rotator-slide-left-out");
           img.classList.add("rotator-slide-left-in");
-        }, OUT_MS);
-      };
   
-      // Pause on hover (optional)
-      const pause = () => { if (timer) window.clearInterval(timer); timer = null; };
-      const resume = () => { if (!timer) timer = window.setInterval(step, interval); };
+          inTransition = false;
+          scheduleNext(interval);
+        }, OUT_MS);
+      }
+  
+      function pause() {
+        paused = true;
+        clearNext();
+      }
+  
+      function resume() {
+        if (!paused) return;
+        paused = false;
+        // If we were paused mid-transition, let it settle and then continue
+        scheduleNext(inTransition ? OUT_MS : interval);
+      }
   
       img.addEventListener("mouseenter", pause);
       img.addEventListener("mouseleave", resume);
   
-      // Pause when tab is hidden (optional)
-      document.addEventListener("visibilitychange", () => {
-        if (document.hidden) pause();
-        else resume();
-      });
+      // Register this rotator for global pause/resume
+      rotators.add({ pause, resume });
   
-      resume();
+      // Start
+      scheduleNext(interval);
     }
   
-    // You already placed the script at the bottom of body, so this is fine:
+    // Single global handler for all rotators (prevents per-rotator divergence)
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        rotators.forEach(r => r.pause());
+      } else {
+        rotators.forEach(r => r.resume());
+      }
+    });
+  
     document.querySelectorAll("img.js-rotator").forEach(startRotator);
   })();
   </script>
