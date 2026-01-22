@@ -51,17 +51,13 @@
       padding:18px;
       box-shadow:0 10px 30px rgba(0,0,0,.25);
 
-      /* appear on load */
       opacity: 0;
       transform: translateY(10px);
       animation: cardIn 500ms ease-out forwards;
 
-      /* hover transition */
       transition: transform 600ms ease, box-shadow 600ms ease;
     }
-    .card:hover{
-      transform: translateY(-2px);
-    }
+    .card:hover{ transform: translateY(-2px); }
 
     @keyframes cardIn{to { opacity: 1; transform: translateY(0); }}
     .card:nth-child(1){ animation-delay: 80ms; }
@@ -77,7 +73,6 @@
 
     .figure{ margin: 12px 0 0; }
 
-    /* Base image styling */
     .shot{
       width:100%;
       border-radius:14px;
@@ -112,43 +107,66 @@
     .rotator{
       position: relative;
       overflow: hidden;
-      border-radius: 14px; /* match .shot */
+      border-radius: 14px;
     }
 
-    /* Right-side overlay arrow button */
     .rotator-next{
       position: absolute;
       top: 0;
       right: 0;
-      width: 54px;
+      width: 64px; /* slightly wider hit area */
       height: 100%;
       border: 0;
       padding: 0;
       cursor: pointer;
-      background: linear-gradient(to left, rgba(0,0,0,.35), rgba(0,0,0,0));
       transition: opacity 200ms ease;
+
+      /* darker overlay so it stands out on bright images */
+      background: linear-gradient(
+        to left,
+        rgba(0,0,0,.55),
+        rgba(0,0,0,.18),
+        rgba(0,0,0,0)
+      );
     }
 
-    /* Arrow glyph */
+    /* Arrow glyph: thicker + subtle shadow to pop on white images */
     .rotator-next::before{
       content:"";
       position:absolute;
       top:50%;
       right:18px;
-      width: 12px;
-      height: 12px;
-      border-right: 3px solid rgba(232,238,252,.85);
-      border-top: 3px solid rgba(232,238,252,.85);
+      width: 14px;
+      height: 14px;
+      border-right: 4px solid rgba(255,255,255,.95);
+      border-top: 4px solid rgba(255,255,255,.95);
       transform: translateY(-50%) rotate(45deg);
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,.65));
     }
 
-    /* Focus ring */
+    /* Optional: add a faint circular backdrop behind the arrow */
+    .rotator-next::after{
+      content:"";
+      position:absolute;
+      top:50%;
+      right:14px;
+      width: 30px;
+      height: 30px;
+      transform: translateY(-50%);
+      border-radius: 999px;
+      background: rgba(0,0,0,.22);
+      box-shadow: 0 2px 10px rgba(0,0,0,.25);
+    }
+    /* Ensure arrow sits above the circle */
+    .rotator-next::before{ z-index: 1; }
+    .rotator-next::after{ z-index: 0; }
+
     .rotator-next:focus-visible{
-      outline: 2px solid rgba(122,162,255,.7);
+      outline: 2px solid rgba(122,162,255,.8);
       outline-offset: -2px;
     }
 
-    /* Desktop behavior: only show on hover/focus */
+    /* Desktop: show only on hover/focus */
     @media (hover: hover) and (pointer: fine){
       .rotator-next{
         opacity: 0;
@@ -156,7 +174,7 @@
       }
       .rotator:hover .rotator-next,
       .rotator:focus-within .rotator-next{
-        opacity: .85;
+        opacity: .95;
         pointer-events: auto;
       }
       .rotator:hover .rotator-next:hover{
@@ -167,15 +185,12 @@
     /* Mobile/touch: always show */
     @media (hover: none), (pointer: coarse){
       .rotator-next{
-        opacity: .85;
+        opacity: .95;
         pointer-events: auto;
       }
-      .rotator-next:active{
-        opacity: 1;
-      }
+      .rotator-next:active{ opacity: 1; }
     }
 
-    /* Swipe animation classes */
     .rotator-swipe-out{
       transform: translateX(-100%);
       transition: transform 450ms ease;
@@ -204,12 +219,11 @@
 
     <header>
       <h1>Multi-Stimuli-Responsive Smart Materials for Soft Robotics</h1>
-      <p class="subtitle">A detailed overview.</p>
+      <!-- <p class="subtitle">A detailed overview.</p> -->
     </header>
 
     <main class="grid">
 
-      <!-- Objective -->
       <section class="card">
         <h2>Objective</h2>
         <p>
@@ -218,7 +232,6 @@
         </p>
       </section>
 
-      <!-- Experimental Methodology -->
       <section class="card half">
         <h2>Experimental Methodology</h2>
         <p>High-level summary of your approach. Keep details for the Methodology page.</p>
@@ -249,7 +262,6 @@
         </div>
       </section>
 
-      <!-- Simulational Methodology -->
       <section class="card half">
         <h2>Simulational Methodology</h2>
         <p>High-level summary of your approach. Keep details for the Methodology page.</p>
@@ -280,7 +292,6 @@
         </div>
       </section>
 
-      <!-- Experimental Results -->
       <section class="card half">
         <h2>Experimental Results</h2>
         <p>High-level summary of your approach. Keep details for the Results page.</p>
@@ -310,7 +321,6 @@
         </div>
       </section>
 
-      <!-- Simulational Results -->
       <section class="card half">
         <h2>Simulational Results</h2>
         <p>Key findings, trade-offs, limitations, and what you would do next.</p>
@@ -344,7 +354,6 @@
         </div>
       </section>
 
-      <!-- Future Work -->
       <section class="card">
         <h2>Future Work</h2>
         <p>Optional: add more images for context. bullet points?</p>
@@ -394,13 +403,11 @@
 
       preload(rawUrls);
 
-      // Start index from current src
       const currentSrc = img.currentSrc || img.getAttribute("src") || rawUrls[0];
       const currentHref = new URL(currentSrc, document.baseURI).href;
       let idx = urls.indexOf(currentHref);
       if (idx === -1) idx = 0;
 
-      // Ensure caption matches initial image
       if (captionEl) captionEl.textContent = captions[idx] ?? captionEl.textContent ?? "";
 
       let busy = false;
@@ -411,7 +418,6 @@
 
         const nextIdx = (idx + 1) % urls.length;
 
-        // Incoming overlay image
         const overlay = document.createElement("img");
         overlay.className = "rotator-overlay";
         overlay.alt = img.alt || "Rotating image";
@@ -419,21 +425,17 @@
 
         rotator.appendChild(overlay);
 
-        // Force layout so transitions apply
         overlay.getBoundingClientRect();
 
-        // Animate: main slides out left, overlay slides in from right
         img.classList.add("rotator-swipe-out");
         overlay.style.transform = "translateX(0)";
 
         window.setTimeout(() => {
-          // Commit new image + caption
           img.src = urls[nextIdx];
           idx = nextIdx;
 
           if (captionEl) captionEl.textContent = captions[idx] ?? "";
 
-          // Reset and cleanup
           img.classList.remove("rotator-swipe-out");
           overlay.remove();
 
