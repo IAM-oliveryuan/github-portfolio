@@ -34,7 +34,6 @@
       margin-bottom:18px;
     }
     h1{margin:0 0 6px; font-size:30px}
-    .subtitle{margin:0; color:var(--muted); max-width:75ch}
 
     .grid{
       display:grid;
@@ -103,7 +102,7 @@
 
     .card-actions{margin-top:12px}
 
-    /* ===== Click-to-swipe rotator ===== */
+    /* ===== Click-to-swipe rotator (hover-only arrows on desktop) ===== */
     .rotator{
       position: relative;
       overflow: hidden;
@@ -120,21 +119,22 @@
       padding: 0;
       cursor: pointer;
       transition: opacity 160ms ease;
-      opacity: 0;               /* hidden by default (desktop) */
-      pointer-events: none;     /* no click when hidden */
       background: none;
+
+      /* hidden by default (desktop) */
+      opacity: 0;
+      pointer-events: none;
     }
 
-    /* Show arrows only when hovering over the rotator (desktop) */
+    /* Show arrows only while hovering the rotator (desktop) */
     @media (hover: hover) and (pointer: fine){
-      .rotator:hover .rotator-btn,
-      .rotator:focus-within .rotator-btn{
+      .rotator:hover .rotator-btn{
         opacity: 1;
         pointer-events: auto;
       }
     }
 
-    /* Left arrow button overlay */
+    /* Left overlay */
     .rotator-prev{
       left: 0;
       background: linear-gradient(
@@ -145,7 +145,7 @@
       );
     }
 
-    /* Right arrow button overlay */
+    /* Right overlay */
     .rotator-next{
       right: 0;
       background: linear-gradient(
@@ -156,7 +156,7 @@
       );
     }
 
-    /* Arrow icon base (we draw it with borders) */
+    /* Arrow icon (CSS borders) */
     .rotator-btn::before{
       content:"";
       position:absolute;
@@ -170,7 +170,7 @@
       z-index: 1;
     }
 
-    /* Circular backdrop behind the arrow icon */
+    /* Circular backdrop behind arrow */
     .rotator-btn::after{
       content:"";
       position:absolute;
@@ -184,27 +184,21 @@
       z-index: 0;
     }
 
-    /* Position/rotate arrow per side */
+    /* Left arrow rotation/position */
     .rotator-prev::before{
       left:18px;
       transform: translateY(-50%) rotate(-135deg);
     }
     .rotator-prev::after{ left:14px; }
 
+    /* Right arrow rotation/position */
     .rotator-next::before{
       right:18px;
       transform: translateY(-50%) rotate(45deg);
     }
     .rotator-next::after{ right:14px; }
 
-    .rotator-btn:focus-visible{
-      outline: 2px solid rgba(122,162,255,.8);
-      outline-offset: -2px;
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    /* Swipe animations */
+    /* Swipe animations for the current image */
     .rotator-swipe-left-out{
       transform: translateX(-100%);
       transition: transform 450ms ease;
@@ -214,6 +208,7 @@
       transition: transform 450ms ease;
     }
 
+    /* Incoming overlay image */
     .rotator-overlay{
       position: absolute;
       top: 0;
@@ -444,22 +439,16 @@
         overlay.alt = img.alt || "Rotating image";
         overlay.src = urls[nextIdx];
 
-        // Directional start positions
-        if (delta === 1) {
-          overlay.style.transform = "translateX(100%)";   // incoming from right
-        } else {
-          overlay.style.transform = "translateX(-100%)";  // incoming from left
-        }
+        // Incoming overlay starts off-screen based on direction
+        overlay.style.transform = (delta === 1) ? "translateX(100%)" : "translateX(-100%)";
 
         rotator.appendChild(overlay);
         overlay.getBoundingClientRect(); // force layout
 
-        // Animate: current image exits, overlay enters
-        if (delta === 1) {
-          img.classList.add("rotator-swipe-left-out"); // current goes left
-        } else {
-          img.classList.add("rotator-swipe-right-out"); // current goes right
-        }
+        // Current image exits
+        img.classList.add(delta === 1 ? "rotator-swipe-left-out" : "rotator-swipe-right-out");
+
+        // Overlay enters
         overlay.style.transform = "translateX(0)";
 
         window.setTimeout(() => {
@@ -470,19 +459,24 @@
 
           img.classList.remove("rotator-swipe-left-out", "rotator-swipe-right-out");
           overlay.remove();
+
+          // Remove focus so hover-only behavior is not "stuck" after click
+          nextBtn.blur();
+          prevBtn.blur();
+
           busy = false;
         }, SWIPE_MS);
       }
 
-      nextBtn.addEventListener("click", () => go(1));
-      prevBtn.addEventListener("click", () => go(-1));
-
-      // Optional: keyboard support when the rotator has focus
-      rotator.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
-        if (e.key === "ArrowLeft")  { e.preventDefault(); go(-1); }
+      nextBtn.addEventListener("click", (e) => {
+        go(1);
+        e.currentTarget.blur();
       });
-      rotator.tabIndex = 0; // allows focus for keyboard control; arrows still only show on hover/focus
+
+      prevBtn.addEventListener("click", (e) => {
+        go(-1);
+        e.currentTarget.blur();
+      });
     }
 
     document.querySelectorAll("img.js-rotator").forEach(initClickRotator);
@@ -490,4 +484,5 @@
   </script>
 </body>
 </html>
+
 
