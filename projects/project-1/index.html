@@ -110,18 +110,44 @@
       border-radius: 14px;
     }
 
-    .rotator-next{
+    /* Shared styles for both arrows */
+    .rotator-btn{
       position: absolute;
       top: 0;
-      right: 0;
-      width: 64px; /* slightly wider hit area */
       height: 100%;
+      width: 72px;
       border: 0;
       padding: 0;
       cursor: pointer;
-      transition: opacity 200ms ease;
+      transition: opacity 160ms ease;
+      opacity: 0;               /* hidden by default (desktop) */
+      pointer-events: none;     /* no click when hidden */
+      background: none;
+    }
 
-      /* darker overlay so it stands out on bright images */
+    /* Show arrows only when hovering over the rotator (desktop) */
+    @media (hover: hover) and (pointer: fine){
+      .rotator:hover .rotator-btn,
+      .rotator:focus-within .rotator-btn{
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
+    /* Left arrow button overlay */
+    .rotator-prev{
+      left: 0;
+      background: linear-gradient(
+        to right,
+        rgba(0,0,0,.55),
+        rgba(0,0,0,.18),
+        rgba(0,0,0,0)
+      );
+    }
+
+    /* Right arrow button overlay */
+    .rotator-next{
+      right: 0;
       background: linear-gradient(
         to left,
         rgba(0,0,0,.55),
@@ -130,69 +156,61 @@
       );
     }
 
-    /* Arrow glyph: thicker + subtle shadow to pop on white images */
-    .rotator-next::before{
+    /* Arrow icon base (we draw it with borders) */
+    .rotator-btn::before{
       content:"";
       position:absolute;
       top:50%;
-      right:18px;
       width: 14px;
       height: 14px;
       border-right: 4px solid rgba(255,255,255,.95);
       border-top: 4px solid rgba(255,255,255,.95);
-      transform: translateY(-50%) rotate(45deg);
+      transform: translateY(-50%);
       filter: drop-shadow(0 2px 2px rgba(0,0,0,.65));
+      z-index: 1;
     }
 
-    /* Optional: add a faint circular backdrop behind the arrow */
-    .rotator-next::after{
+    /* Circular backdrop behind the arrow icon */
+    .rotator-btn::after{
       content:"";
       position:absolute;
       top:50%;
-      right:14px;
       width: 30px;
       height: 30px;
       transform: translateY(-50%);
       border-radius: 999px;
       background: rgba(0,0,0,.22);
       box-shadow: 0 2px 10px rgba(0,0,0,.25);
+      z-index: 0;
     }
-    /* Ensure arrow sits above the circle */
-    .rotator-next::before{ z-index: 1; }
-    .rotator-next::after{ z-index: 0; }
 
-    .rotator-next:focus-visible{
+    /* Position/rotate arrow per side */
+    .rotator-prev::before{
+      left:18px;
+      transform: translateY(-50%) rotate(-135deg);
+    }
+    .rotator-prev::after{ left:14px; }
+
+    .rotator-next::before{
+      right:18px;
+      transform: translateY(-50%) rotate(45deg);
+    }
+    .rotator-next::after{ right:14px; }
+
+    .rotator-btn:focus-visible{
       outline: 2px solid rgba(122,162,255,.8);
       outline-offset: -2px;
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    /* Desktop: show only on hover/focus */
-    @media (hover: hover) and (pointer: fine){
-      .rotator-next{
-        opacity: 0;
-        pointer-events: none;
-      }
-      .rotator:hover .rotator-next,
-      .rotator:focus-within .rotator-next{
-        opacity: .95;
-        pointer-events: auto;
-      }
-      .rotator:hover .rotator-next:hover{
-        opacity: 1;
-      }
-    }
-
-    /* Mobile/touch: always show */
-    @media (hover: none), (pointer: coarse){
-      .rotator-next{
-        opacity: .95;
-        pointer-events: auto;
-      }
-      .rotator-next:active{ opacity: 1; }
-    }
-
-    .rotator-swipe-out{
+    /* Swipe animations */
+    .rotator-swipe-left-out{
       transform: translateX(-100%);
+      transition: transform 450ms ease;
+    }
+    .rotator-swipe-right-out{
+      transform: translateX(100%);
       transition: transform 450ms ease;
     }
 
@@ -205,10 +223,9 @@
       display: block;
       border-radius: 14px;
       border: 1px solid var(--line);
-      transform: translateX(100%);
-      transition: transform 450ms ease;
       will-change: transform;
       pointer-events: none;
+      transition: transform 450ms ease;
     }
   </style>
 </head>
@@ -219,7 +236,6 @@
 
     <header>
       <h1>Multi-Stimuli-Responsive Smart Materials for Soft Robotics</h1>
-      <!-- <p class="subtitle">A detailed overview.</p> -->
     </header>
 
     <main class="grid">
@@ -249,7 +265,8 @@
               src="./img/post_gel.jpg"
               alt="Experimental methodology"
             >
-            <button class="rotator-next" type="button" aria-label="Next image"></button>
+            <button class="rotator-btn rotator-prev" type="button" aria-label="Previous image"></button>
+            <button class="rotator-btn rotator-next" type="button" aria-label="Next image"></button>
           </div>
 
           <div class="caption js-rotator-caption">
@@ -279,7 +296,8 @@
               src="./img/flowchart1.png"
               alt="Simulational methodology"
             >
-            <button class="rotator-next" type="button" aria-label="Next image"></button>
+            <button class="rotator-btn rotator-prev" type="button" aria-label="Previous image"></button>
+            <button class="rotator-btn rotator-next" type="button" aria-label="Next image"></button>
           </div>
 
           <div class="caption js-rotator-caption">
@@ -308,7 +326,8 @@
               src="./img/swell_data.png"
               alt="Experimental results"
             >
-            <button class="rotator-next" type="button" aria-label="Next image"></button>
+            <button class="rotator-btn rotator-prev" type="button" aria-label="Previous image"></button>
+            <button class="rotator-btn rotator-next" type="button" aria-label="Next image"></button>
           </div>
 
           <div class="caption js-rotator-caption">
@@ -341,7 +360,8 @@
               src="./img/voltage_varing.png"
               alt="Simulational results"
             >
-            <button class="rotator-next" type="button" aria-label="Next image"></button>
+            <button class="rotator-btn rotator-prev" type="button" aria-label="Previous image"></button>
+            <button class="rotator-btn rotator-next" type="button" aria-label="Next image"></button>
           </div>
 
           <div class="caption js-rotator-caption">
@@ -398,8 +418,9 @@
       const rotator = img.closest(".rotator");
       const captionEl = figure?.querySelector(".js-rotator-caption") || null;
       const nextBtn = rotator?.querySelector(".rotator-next") || null;
+      const prevBtn = rotator?.querySelector(".rotator-prev") || null;
 
-      if (!rotator || !nextBtn) return;
+      if (!rotator || !nextBtn || !prevBtn) return;
 
       preload(rawUrls);
 
@@ -412,22 +433,33 @@
 
       let busy = false;
 
-      nextBtn.addEventListener("click", () => {
+      function go(delta) {
         if (busy) return;
         busy = true;
 
-        const nextIdx = (idx + 1) % urls.length;
+        const nextIdx = (idx + delta + urls.length) % urls.length;
 
         const overlay = document.createElement("img");
         overlay.className = "rotator-overlay";
         overlay.alt = img.alt || "Rotating image";
         overlay.src = urls[nextIdx];
 
+        // Directional start positions
+        if (delta === 1) {
+          overlay.style.transform = "translateX(100%)";   // incoming from right
+        } else {
+          overlay.style.transform = "translateX(-100%)";  // incoming from left
+        }
+
         rotator.appendChild(overlay);
+        overlay.getBoundingClientRect(); // force layout
 
-        overlay.getBoundingClientRect();
-
-        img.classList.add("rotator-swipe-out");
+        // Animate: current image exits, overlay enters
+        if (delta === 1) {
+          img.classList.add("rotator-swipe-left-out"); // current goes left
+        } else {
+          img.classList.add("rotator-swipe-right-out"); // current goes right
+        }
         overlay.style.transform = "translateX(0)";
 
         window.setTimeout(() => {
@@ -436,12 +468,21 @@
 
           if (captionEl) captionEl.textContent = captions[idx] ?? "";
 
-          img.classList.remove("rotator-swipe-out");
+          img.classList.remove("rotator-swipe-left-out", "rotator-swipe-right-out");
           overlay.remove();
-
           busy = false;
         }, SWIPE_MS);
+      }
+
+      nextBtn.addEventListener("click", () => go(1));
+      prevBtn.addEventListener("click", () => go(-1));
+
+      // Optional: keyboard support when the rotator has focus
+      rotator.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
+        if (e.key === "ArrowLeft")  { e.preventDefault(); go(-1); }
       });
+      rotator.tabIndex = 0; // allows focus for keyboard control; arrows still only show on hover/focus
     }
 
     document.querySelectorAll("img.js-rotator").forEach(initClickRotator);
@@ -449,3 +490,4 @@
   </script>
 </body>
 </html>
+
