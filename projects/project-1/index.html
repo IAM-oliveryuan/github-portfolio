@@ -134,6 +134,14 @@
       }
     }
 
+    /* Mobile/touch: always show */
+    @media (hover: none), (pointer: coarse){
+      .rotator-btn{
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
     /* Left overlay */
     .rotator-prev{
       left: 0;
@@ -238,14 +246,21 @@
       <section class="card">
         <h2>Objective</h2>
         <p>
-          Hydrogels are porous hydrophilic polymer networks that exhibit properties of both solids and liquids. They are multi-stimuli-responsive, largely bio-compatible, and broadly applicable in the field of soft robotics.
-          <br>To address the lack of modelling dedicated for any specific material, I built a multi-physics simulation model, coupled with experimental validation, for the actuation response of a NaAc/AAm hydrogel under an electric field.
+          Hydrogels are porous hydrophilic polymer networks that exhibit properties of both solids and liquids. 
+          They are multi-stimuli-responsive, bio-compatible, and broadly applicable in the field of soft robotics.
+          <br>To address the lack of modelling dedicated for any specific application of the material, 
+          I built a multi-physics simulation model, coupled with experimental validation, 
+          for the actuation response of NaAc/AAm hydrogel beams in a NaCl solution under an electric field.
         </p>
       </section>
 
       <section class="card half">
         <h2>Experimental Methodology</h2>
-        <p>High-level summary of your approach. Keep details for the Methodology page.</p>
+        <p>The aim of the experiment is to produce hydrogel beams that are able
+            to deform in a salt solution under an external electric field, 
+            and to validate the corresponding simulation, by performing tests against different parameters.
+            <br>I established a repeatbale experimental system that mainly includes hydrogel fabrication, swelling tests and bending tests.
+        </p>
 
         <div class="figure">
           <div class="rotator">
@@ -276,7 +291,10 @@
 
       <section class="card half">
         <h2>Simulational Methodology</h2>
-        <p>High-level summary of your approach. Keep details for the Methodology page.</p>
+        <p>The aim of the simulation is to be able to model the swelling equilibrium 
+           and the bending steady state of generic hydrogel beams in a salt solution,under an electric field.
+          
+        </p>
 
         <div class="figure">
           <div class="rotator">
@@ -345,10 +363,11 @@
               class="shot js-rotator"
               data-images="./img/voltage_varing.png,./img/ionic_electric.png,./img/dis_press.png,./img/difflen.png,./img/diverge.png,./img/solver_break.png"
               data-captions='[
-                "Simulated hydrogel width and displacement at different electric field strengths, validated against experimental results",
-                "Ionic and electric potential distribution across the computational domain",
-                "Displacement and fluid pressure distribution across the computational domain",
-                "One of the validations: simulated swollen width for different computational domain lengths",
+                "Simulated hydrogel width and displacement at different electric field strengths, 
+                validated against experimental results",
+                "An illustration of simulated ionic and electric potential distribution across the computational domain",
+                "An illustration of simulated displacement and fluid pressure distribution across the computational domain",
+                "One of the validations: deviation of simulated swollen width against different computational domain lengths",
                 "Convergence analysis of the simulation algorithm",
                 "An illustration of a solver breakdown scenario within the algorithm"
               ]'
@@ -360,7 +379,8 @@
           </div>
 
           <div class="caption js-rotator-caption">
-            Simulated hydrogel width and displacement at different electric field strengths, validated against experimental results
+            Simulated hydrogel width and displacement at different electric field strengths, 
+            validated against experimental results
           </div>
         </div>
 
