@@ -486,14 +486,25 @@
       <!-- Simulational Results -->
       <section class="card">
         <div class="card-left">
-          <h2>Simulational Results</h2>
+          <h2>Trajectory Planning</h2>
           <p>
-            The simulational results comprise the prediction of the deformation of a generic electro-active hydrogel
-            and how it is affected by voltage, crosslinker density and salt bath concentration.
-            It also offers insights into the distribution of the all the ionic concentrations
-            and the electric potential across the entire domain. The validity of the results is
-            evaluated from various perspectives,
-            including but not limited to comparing it against the experimental results.
+            <ul>
+				<li>
+					Based on 12 via points, and a time interval of ,,,s .I generated a time evolution of the 4 joint variables, and
+					their velocity and 	acceleration overtime. The max vel and the max acc [see more]
+				</li>
+				<li>
+					I generated the corresponding trajectory of the end effector.
+				</li>
+				<li>
+					I analyse the characteristics of two trajectory interpolation methods/algorithms. 
+					(always leads to decision making) [see more] 
+				</li>
+				<li>
+				I performed a self collision examination of the manipulator along the planned trajectory. [see more]
+				</li>
+				
+			</ul>
           </p>
         </div>
 
@@ -527,28 +538,6 @@
         </div>
       </section>
 
-      <!-- Main limitation (text-only) -->
-      <section class="card">
-        <div class="card-left">
-          <h2>Main limitation</h2>
-          <ul>
-            <li>
-              To avoid electrolysis and ensure visible bending,
-              only a limited range of voltage and electrode distance can be used.
-            </li>
-            <li>
-              Due to the intrinsic accuracy limitation of the selected local nonlinear solvers,
-              the simulation was only able to produce consistent results when the voltage varies
-              from 0.0625V to 0.1875V, the salt concentration varies from 8.75mol/m3 to 11.25 mol/m3
-              and the reference water volume percentage varies from 0.6 to 0.9.
-            </li>
-            <li>
-              There is a mismatch of used parameter ranges between the experiment and simulation,
-              which partially reduces the credibility of experimental validation.
-            </li>
-          </ul>
-        </div>
-      </section>
 
       <!-- Future Work (text-only) -->
       <section class="card">
