@@ -138,6 +138,55 @@
       -webkit-box-orient: vertical;
     }
 
+    /* ===== DH table (inline-friendly) ===== */
+    .dh-table-wrap{
+      margin: 12px 0 0;
+      overflow-x: auto;               /* allows scroll on small screens */
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .dh-table{
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 620px;               /* prevents crushed columns */
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .dh-table th,
+    .dh-table td{
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    
+    .dh-table thead th{
+      background: #f8fafc;            /* subtle header tint */
+      font-weight: 600;
+    }
+    
+    .dh-table tbody tr:last-child td{
+      border-bottom: 0;
+    }
+    
+    .dh-caption{
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    
+    .math{
+      font-variant-numeric: lining-nums;
+    }
+
+    
+
     .btns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
 
     .btn{
@@ -383,15 +432,60 @@
             attached by a L shaped end effector.
             The key dimensions were listed as standard DH parameters in the DH table to the right.
           </p>
-
-          <h2>Key Facts</h2>
-          <ul>
-            <li>
-              Fact20
-              <button class="btn inline primary" type="button" data-open-modal="fact20-modal">See more</button>
-            </li>
-            <li>Fact1</li>
-          </ul>
+              <!-- DH table  -->
+          <div class="dh-table-wrap" aria-label="DH parameters table">
+            <table class="dh-table">
+              <thead>
+                <tr>
+                  <th>i</th>
+                  <th>link length <span class="math">a<sub>i−1</sub></span></th>
+                  <th>link twist <span class="math">α<sub>i−1</sub></span></th>
+                  <th>link offset <span class="math">d<sub>i</sub></span></th>
+                  <th>joint angle <span class="math">θ<sub>i</sub></span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>L<sub>1</sub> = 35&nbsp;cm</td>
+                  <td>θ<sub>1</sub> ∈ (−π, π]</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>L<sub>2</sub> = 25&nbsp;cm</td>
+                  <td>−π/2</td>
+                  <td>0</td>
+                  <td>θ<sub>2</sub> ∈ (−π, 0]</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>0</td>
+                  <td>−π/2</td>
+                  <td>L<sub>3</sub> = 2&nbsp;cm</td>
+                  <td>θ<sub>3</sub> ∈ (−π, π]</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>L<sub>4</sub> = 10&nbsp;cm</td>
+                  <td>0</td>
+                  <td>d<sub>4</sub> ∈ [5&nbsp;cm, 15&nbsp;cm]</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>e</td>
+                  <td>−L<sub>4</sub>/2</td>
+                  <td>0</td>
+                  <td>L<sub>4</sub>/2</td>
+                  <td>0</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="dh-caption">DH parameters</div>
+          </div>
+          <!-- /DH table -->
+          
         </div>
 
         <div class="card-right">
@@ -427,6 +521,14 @@
             I derived the FK, IK and Jacobian for the manipulator and back checked the IK using FK.
             (Replace this placeholder with your final write-up.)
           </p>
+          <h2>Key Facts</h2>
+          <ul>
+            <li>
+              Fact20
+              <button class="btn inline primary" type="button" data-open-modal="fact20-modal">See more</button>
+            </li>
+            <li>Fact1</li>
+          </ul>
         </div>
 
         <div class="card-right">
