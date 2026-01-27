@@ -490,24 +490,14 @@
 
         <div class="card-right">
           <div class="figure">
-            <div class="rotator">
-              <img
-                class="shot js-rotator"
-                data-images="./img/configuration_m.png,./img/swollen.jpg,./img/bent_gel.png"
-                data-captions='[
-                  "Hydrogel polymerization using an optimised molding system",
-                  "Swollen hydrogel beams, after equilibration in NaCl solution",
-                  "A bending hydrogel beam fixed in a NaCl solution under an electric field"
-                ]'
-                src="./img/configuration_m.png"
-                alt="Experimental methodology"
-              >
-              <button class="rotator-btn rotator-prev" type="button" aria-label="Previous image"></button>
-              <button class="rotator-btn rotator-next" type="button" aria-label="Next image"></button>
-              
-              <div class="caption js-rotator-caption">
-                Hydrogel polymerization using an optimised molding system
-              </div>
+
+            <img
+              class="shot"
+              src="./img/configuration_m.png"
+              alt="Manipulator configuration"
+            >
+            <div class="caption">
+              Configuration of the manipulator
             </div>
           </div>
          
@@ -627,6 +617,9 @@
     </main>
   </div>
 
+  <!-- modal
+  modal
+  modal section -->
   <!-- ===== Modal for FK ===== -->
   <div class="modal" id="FK-modal" aria-hidden="true" aria-labelledby="FK-title" role="dialog">
     <div class="modal-backdrop" data-close-modal="FK-modal"></div>
@@ -637,38 +630,28 @@
 
         <div class="card-left">
           <h2 class="modal-title" id="FK-title">FK-add</h2>
-          <p>Put your extended explanation here.</p>
-          <ul>
-            <li>What Fact20 means in context</li>
-            <li>Why it matters to the methodology/results</li>
-            <li>Any quantified observation or constraint</li>
-          </ul>
+          <p>The transformation matrix from the base frame to the end effector frame is:
+          <br>
+          \( {}_{e}^{0}T = {}_{4}^{0}T\,{}_{e}^{4}T =
+          \left(
+          \begin{matrix}
+          c_1c_2c_3+s_1s_3 & -c_1c_2s_3+s_1c_3 & -c_1s_2 &
+          \frac{L_4}{2}(c_1c_2c_3+s_1s_3)-(d_4+L_3+\frac{L_4}{2})c_1s_2+L_2c_1 \\
+          s_1c_2c_3-c_1s_3 & -s_1c_2s_3-c_1c_3 & -s_1s_2 &
+          \frac{L_4}{2}(s_1c_2c_3-c_1s_3)-(d_4+L_3+\frac{L_4}{2})s_1s_2+L_2s_1 \\
+          -s_2c_3 & s_2s_3 & -c_2 &
+          -L_4s_2c_3-(d_4+L_3+\frac{L_4}{2})c_2+L_1 \\
+          0 & 0 & 0 & 1
+          \end{matrix}
+          \right)
+          \)
+          <br>
+            , with all the parameters listed in the DH table
+          </p>
+
         </div>
 
-        <div class="card-right">
-          <div class="figure">
-            <div class="rotator">
-              <img
-                class="shot js-rotator"
-                data-images="./img/post_gel.jpg,./img/swollen.jpg,./img/bent_gel.png"
-                data-captions='[
-                  "Hydrogel polymerization using an optimised molding system",
-                  "Swollen hydrogel beams, after equilibration in NaCl solution",
-                  "A bending hydrogel beam fixed in a NaCl solution under an electric field"
-                ]'
-                src="./img/post_gel.jpg"
-                alt="Fact20 details"
-              >
-              <button class="rotator-btn rotator-prev" type="button" aria-label="Previous image"></button>
-              <button class="rotator-btn rotator-next" type="button" aria-label="Next image"></button>
-            </div>
-
-            <div class="caption js-rotator-caption">
-              Hydrogel polymerization using an optimised molding system
-            </div>
-          </div>
-        </div>
-
+  
       </div>
     </div>
   </div>
