@@ -574,6 +574,7 @@
             <li>
               Based on 12 via points and a time interval of … s, I generated time histories of joint position,
               velocity, and acceleration. (Replace with final numbers.)
+              <button class="btn inline primary" type="button" data-open-modal="jointvst-modal">Details</button>
             </li>
             <li>I generated the corresponding end-effector trajectory.</li>
             <li>I compared two interpolation methods and discussed tradeoffs.</li>
@@ -752,6 +753,56 @@
       </div>
     </div>
   </div>
+
+
+
+      <!-- ===== Modal for Jacobian ===== -->
+  <div class="modal" id="Jointvst-modal" aria-hidden="true" aria-labelledby="Jointvst-title" role="dialog">
+    <div class="modal-backdrop" data-close-modal="Jointvst-modal"></div>
+
+    <div class="modal-panel" role="document">
+      <div class="modal-card">
+        <button class="modal-close" type="button" aria-label="Close" data-close-modal="Jointvst-modal">×</button>
+
+        <div class="card-left">
+          <h2 class="modal-title" id="Jointvst-title">Jacobian — Additional Details</h2>
+          <p>Put your extended explanation here.</p>
+          <ul>
+            <li>What Fact20 means in context</li>
+            <li>Why it matters to the methodology/results</li>
+            <li>Any quantified observation or constraint</li>
+          </ul>
+        </div>
+
+        <div class="card-right">
+          <div class="figure">
+            <div class="rotator">
+              <img
+                class="shot js-rotator"
+                data-images="./img/traj_position.png,./img/traj_velocity.png,./img/traj_acceleration.png"
+                data-captions='[
+                  "Time evolution of the joint variables along the planned trajectory",
+                  "Time evolution of the velocity of the joint variables along the planned trajectory",
+                  "Time evolution of the acceleration of the joint variables along the planned trajectory"
+                ]'
+                src="./img/traj_position.png"
+                alt="Fact20 details"
+              >
+              <button class="rotator-btn rotator-prev" type="button" aria-label="Previous image"></button>
+              <button class="rotator-btn rotator-next" type="button" aria-label="Next image"></button>
+            </div>
+
+            <div class="caption js-rotator-caption">
+              Time evolution of the joint variables along the planned trajectory
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  
 
   <script>
   (() => {
