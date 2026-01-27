@@ -612,27 +612,21 @@
 
         <div class="card-right">
           <div class="figure">
-            <div class="rotator">
-              <img
-                class="shot js-rotator"
-                data-images="./img/voltage_varing.png,./img/ionic_electric.png,./img/dis_press.png,./img/difflen.png,./img/diverge.png,./img/solver_break.png"
-                data-captions='[
-                  "Simulated hydrogel width and displacement at different electric field strengths, validated against experimental results",
-                  "An illustration of simulated ionic and electric potential distribution across the computational domain",
-                  "An illustration of simulated displacement and fluid pressure distribution across the computational domain",
-                  "Validation: deviation of simulated swollen width against different computational domain lengths",
-                  "Convergence analysis of the simulation algorithm",
-                  "An illustration of a solver breakdown scenario within the algorithm"
-                ]'
-                src="./img/voltage_varing.png"
-                alt="Simulational results"
+              <video
+                class="shot"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
               >
-              <button class="rotator-btn rotator-prev" type="button" aria-label="Previous image"></button>
-              <button class="rotator-btn rotator-next" type="button" aria-label="Next image"></button>
-            </div>
+                <source src="./vid/animation.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
 
-            <div class="caption js-rotator-caption">
-              Simulated hydrogel width and displacement at different electric field strengths, validated against experimental results
+
+            <div class="caption">
+              Animation of the planned trajectory
             </div>
           </div>
         </div>
