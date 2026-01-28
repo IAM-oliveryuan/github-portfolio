@@ -106,16 +106,20 @@
     }
     /* li{ margin: 8px 0; } */
         /* List items with right-aligned inline buttons */
-    li{
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 8px 0;
+    .li-row{
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: 14px;
     }
     
-    li .btn.inline{
-      margin-left: auto; /* pushes button to end of line */
-      white-space: nowrap;
+    .li-row .li-text{
+      min-width: 0;
+    }
+    
+    .li-row .btn.inline{
+      align-self: end;   /* ⬅ aligns button with last text line */
+      justify-self: end;
+    }
     }
 
 
@@ -531,6 +535,18 @@
               was later used in workspace generation and trajectroy planning.
               <button class="btn inline primary" type="button" data-open-modal="FK-modal">Details</button>
             </li>
+
+
+            <li>
+              <div class="li-row">
+                <span class="li-text">
+                  When I zoom in/out, the placement of the pop up windows (notxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx big issuee)
+                </span>
+                <button class="btn inline primary" type="button">details</button>
+              </div>
+            </li>
+
+            
             
             <li>
               I derived and analysed the Inverse Kinematics (IK) of the manipulator in Python, which was later used in
